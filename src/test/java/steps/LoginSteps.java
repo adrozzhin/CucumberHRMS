@@ -8,6 +8,10 @@ import pages.DashBoardPage;
 import pages.LoginPage;
 import utils.CommonMethods;
 import utils.ConfigReader;
+import io.cucumber.datatable.DataTable;
+
+import java.util.List;
+import java.util.Map;
 
 public class LoginSteps extends CommonMethods {
 
@@ -42,14 +46,14 @@ public class LoginSteps extends CommonMethods {
         DashBoardPage dashBoardPage = new DashBoardPage();
         Assert.assertTrue(dashBoardPage.welcomeMessage.isDisplayed());
         Assert.assertTrue(dashBoardPage.welcomeMessage.getText().contains(essUser[2]));
-        boolean present;
+        boolean flag;
         try {
             boolean pimIsDisplayed = dashBoardPage.pimOption.isDisplayed();
-            present=false;
+            flag=false;
         } catch (NoSuchElementException e) {
-            present=true;
+            flag=true;
         }
-        Assert.assertTrue(present);
+        Assert.assertTrue(flag);
         tearDown();
     }
     @When("user enters valid ess username and invalid password")
@@ -94,5 +98,43 @@ public class LoginSteps extends CommonMethods {
         Assert.assertTrue(loginPage.errorMessage.isDisplayed());
         Assert.assertTrue(loginPage.errorMessage.getText().contains("Password cannot be empty"));
         tearDown();
+    }
+
+    @When("user enters invalid credentials and clicks on login verify the error")
+    public void user_enters_invalid_credentials_and_clicks_on_login_verify_the_error(DataTable errorValidation) {
+        // Write code here that turns the phrase above into concrete actions
+        // For automatic transformation, change DataTable to one of
+        // E, List<E>, List<List<E>>, List<Map<K,V>>, Map<K,V> or
+        // Map<K, List<V>>. E,K,V must be a String, Integer, Float,
+        // Double, Byte, Short, Long, BigInteger or BigDecimal.
+        //
+        // For other transformations you can register a DataTableType.
+        List<Map<String, String>> errorData = errorValidation.asMaps();
+
+        for (Map<String, String> validation: errorData
+             ) {
+            String userNameValue = validation.get("username");
+            String passwordValue = validation.get("password");
+            String errorMessageValue = validation.get("errorMessage");
+
+            LoginPage loginPage = new LoginPage();
+            sendText(loginPage.userNameBox, userNameValue);
+            sendText(loginPage.passwordBox, passwordValue);
+            click(loginPage.loginBtn);
+
+            String errorMessageActual = loginPage.errorMessage.getText();
+            Assert.assertEquals("Values do not match", errorMessageActual, errorMessageValue);
+        }
+    }
+
+    @When("user enters invalid {string} and {string} and clicks on login and verify the {string}")
+    public void user_enters_invalid_and_and_clicks_on_login_and_verify_the(String username, String password, String errorMessage) {
+        LoginPage loginPage = new LoginPage();
+        sendText(loginPage.userNameBox, username);
+        sendText(loginPage.passwordBox, password);
+        click(loginPage.loginBtn);
+
+        String errorMessageActual = loginPage.errorMessage.getText();
+        Assert.assertEquals("Values do not match", errorMessageActual, errorMessage);
     }
 }

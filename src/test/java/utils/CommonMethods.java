@@ -5,6 +5,7 @@ import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -31,10 +32,6 @@ public class CommonMethods{
             case "firefox":
                 WebDriverManager.firefoxdriver().setup();
                 driver = new FirefoxDriver();
-                break;
-            case "safari":
-                WebDriverManager.safaridriver().setup();
-                driver = new SafariDriver();
                 break;
             default:
                 throw new RuntimeException("Invalid browser name");
@@ -66,6 +63,12 @@ public class CommonMethods{
         waitForClickability(element);
         element.click();
     }
+
+    public static void moveCursor(WebElement element) {
+        Actions action = new Actions(driver);
+        action.moveToElement(element).perform();
+    }
+
     public static JavascriptExecutor getJSExecutor() {
         JavascriptExecutor js = (JavascriptExecutor) driver;
         return js;
@@ -75,8 +78,10 @@ public class CommonMethods{
         getJSExecutor().executeScript("arguments[0].click();", element);
     }
 
-    public static void takeScreenShot(String fileName) {
+    public static byte[] takeScreenShot(String fileName) {
         TakesScreenshot ts = (TakesScreenshot) driver;
+
+        byte[] picBytes = ts.getScreenshotAs(OutputType.BYTES);
         File sourceFile = ts.getScreenshotAs(OutputType.FILE);
 
         try {
@@ -84,6 +89,7 @@ public class CommonMethods{
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return picBytes;
     }
     public static String getTimeStamp(String pattern) {
         Date date = new Date();

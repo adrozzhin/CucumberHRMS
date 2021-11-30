@@ -1,5 +1,6 @@
 Feature: Search employee
 
+@sprint1
   Scenario: 2345-Search employee by id
     Given user is navigated to HRMS
     And user is logged in with valid admin credentials
@@ -8,6 +9,7 @@ Feature: Search employee
     And click on search button
     Then user see employee with desired id is displayed
     Then user quit the browser
+
 
   Scenario: 2345-Search employee by name
     Given user is navigated to HRMS

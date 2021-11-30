@@ -5,6 +5,8 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import utils.CommonMethods;
 
+import java.util.List;
+
 public class DashBoardPage extends CommonMethods {
 
     @FindBy(id ="welcome")
@@ -18,6 +20,18 @@ public class DashBoardPage extends CommonMethods {
 
     @FindBy(id = "menu_pim_viewEmployeeList")
     public WebElement employeeListOption;
+
+    @FindBy(xpath = "//*[@class='menu']/ul/li")
+    public List<WebElement> dashboardTabs;
+
+    @FindBy(id = "menu_admin_viewAdminModule")
+    public WebElement AdminTabBtn;
+
+    @FindBy(id = "menu_admin_Job")
+    public WebElement JobTabBtn;
+
+    @FindBy(id = "menu_admin_viewJobTitleList")
+    public WebElement JobTitlesTabBtn;
 
     public DashBoardPage() {
 

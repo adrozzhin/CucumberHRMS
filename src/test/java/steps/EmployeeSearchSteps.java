@@ -3,8 +3,11 @@ package steps;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.assertj.core.api.SoftAssertions;
 import org.junit.Assert;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import pages.DashBoardPage;
 import pages.EmployeeListPage;
 import pages.LoginPage;
@@ -52,6 +55,7 @@ public class EmployeeSearchSteps extends CommonMethods {
     @When("user enters valid employee name")
     public void user_enters_valid_employee_name() throws InterruptedException {
         EmployeeListPage emp = new EmployeeListPage();
+
         Thread.sleep(2000);
         sendText(emp.employeeNameField, desiredName);
         click(emp.idEmployee); //click on any WebElement to close Name Dropdown in order to

@@ -1,5 +1,6 @@
 Feature: Login validation
 
+
   Scenario: Valid admin login
     Given user is navigated to HRMS
     When user enters valid username and password
@@ -11,6 +12,7 @@ Feature: Login validation
     When user enters valid ess username and password
     And user clicks on login button
     Then ess user is successfully logged in
+
 
   Scenario: Valid username and invalid password login
     Given user is navigated to HRMS
